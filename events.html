@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events - Event Locator</title>
+  <!-- Bootstrap CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="container mt-4">
+    <!-- Header with back button -->
+    <div class="row mb-4">
+      <div class="col">
+        <a href="index.html" class="btn btn-outline-secondary mb-3">
+          <i class="bi bi-arrow-left"></i> Back to Search
+        </a>
+        <h1 class="mb-3">Events</h1>
+        <div id="searchInfo" class="text-muted mb-4"></div>
+      </div>
+    </div>
+
+    <!-- Events container -->
+    <div id="eventsContainer" class="row g-4">
+      <!-- Events will be dynamically inserted here -->
+    </div>
+
+    <!-- No events message -->
+    <div id="noEvents" class="text-center mt-5" style="display: none;">
+      <h3 class="text-muted">No events found</h3>
+      <p class="text-muted">Try adjusting your search criteria</p>
+      <a href="index.html" class="btn btn-primary">New Search</a>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Event data -->
+  <script src="js/eventdata.js"></script>
+  
+  <script>
+    // Function to get URL parameters
+    function getUrlParams() {
+      const params = new URLSearchParams(window.location.search);
+      return {
+        city: params.get('city') || '',
+        date: params.get('date') || '',
+        category: params.get('category') || ''
+      };
+    }
+
+    // Function to filter events
+    function filterEvents(events, filters) {
+      return events.filter(event => {
+        // Filter by city (case-insensitive)
+        if (filters.city && !event.location.toLowerCase().includes(filters.city.toLowerCase())) {
+          return false;
+        }
+        
+        // Filter by date
+        if (filters.date && event.date !== filters.date) {
+          return false;
+        }
+        
+        // Filter by category
+        if (filters.category && event.category !== filters.category) {
+          return false;
+        }
+        
+        return true;
+      });
+    }
+
+    // Function to format date
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    // Function to create event card HTML
+    function createEventCard(event, index) {
+      return `
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">${event.eventName}</h5>
+              <p class="card-text text-muted">
+                <i class="bi bi-calendar"></i> ${formatDate(event.date)}
+              </p>
+              <p class="card-text text-muted">
+                <i class="bi bi-geo-alt"></i> ${event.location}
+              </p>
+              <p class="card-text text-muted">
+                <i class="bi bi-tag"></i> ${event.category}
+              </p>
+              <p class="card-text">${event.description}</p>
+            </div>
+            <div class="card-footer bg-transparent">
+              <a href="event-details.html?event=${index}" class="btn btn-primary btn-sm w-100">
+                View Details
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Function to display search info
+    function displaySearchInfo(filters) {
+      const searchInfo = document.getElementById('searchInfo');
+      const activeFilters = [];
+      
+      if (filters.city) activeFilters.push(`City: ${filters.city}`);
+      if (filters.date) activeFilters.push(`Date: ${formatDate(filters.date)}`);
+      if (filters.category) activeFilters.push(`Category: ${filters.category}`);
+      
+      if (activeFilters.length > 0) {
+        searchInfo.innerHTML = `<strong>Search Results for:</strong> ${activeFilters.join(' | ')}`;
+      } else {
+        searchInfo.innerHTML = '<strong>All Events</strong>';
+      }
+    }
+
+    // Main function to load and display events
+    function loadEvents() {
+      const filters = getUrlParams();
+      const filteredEvents = filterEvents(events, filters);
+      const eventsContainer = document.getElementById('eventsContainer');
+      const noEvents = document.getElementById('noEvents');
+      
+      // Display search info
+      displaySearchInfo(filters);
+      
+      // Check if any events found
+      if (filteredEvents.length === 0) {
+        eventsContainer.style.display = 'none';
+        noEvents.style.display = 'block';
+        return;
+      }
+      
+      // Display events
+      eventsContainer.style.display = 'flex';
+      noEvents.style.display = 'none';
+      
+      const eventsHTML = filteredEvents.map((event, index) => {
+        // Find the original index in the events array
+        const originalIndex = events.findIndex(e => e.eventName === event.eventName);
+        return createEventCard(event, originalIndex);
+      }).join('');
+      
+      eventsContainer.innerHTML = eventsHTML;
+    }
+
+    // Load events when page loads
+    document.addEventListener('DOMContentLoaded', loadEvents);
+  </script>
+</body>
+</html>
