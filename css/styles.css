@@ -2,12 +2,14 @@
 
 body {
   background-color: #f8f9fa;
+  color: #2c3e50;
 }
 
 h1 {
   font-weight: 700;
   letter-spacing: 1px;
-  color: #2c3e50;
+  color: #1a365d;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 #searchForm {
@@ -15,33 +17,127 @@ h1 {
 }
 
 .card {
-  transition: transform 0.2s ease-in-out;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  background: white;
 }
 
 .card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
 .card-header {
-  border-radius: 10px 10px 0 0 !important;
+  border-radius: 12px 12px 0 0 !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
 }
 
 .btn {
   border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+}
+
+.btn-outline-secondary {
+  border-color: #6c757d;
+  color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
 }
 
 .form-control, .form-select {
   border-radius: 8px;
-  border: 1px solid #dee2e6;
+  border: 2px solid #e9ecef;
+  transition: all 0.2s ease;
 }
 
 .form-control:focus, .form-select:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
 }
 
 .badge {
   border-radius: 6px;
+  font-weight: 500;
+  padding: 0.5em 0.8em;
+}
+
+/* Category-specific badge colors */
+.badge.business {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.badge.fashion {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.badge.technology {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+}
+
+.badge.events {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  color: white;
+}
+
+.badge.creative {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  color: white;
+}
+
+/* Card title styling */
+.card-title {
+  color: #1a365d;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Card text styling */
+.card-text {
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+.card-text.text-muted {
+  color: #718096 !important;
+}
+
+/* Search info styling */
+#searchInfo {
+  background: rgba(102, 126, 234, 0.1);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+/* No events styling */
+#noEvents h3 {
+  color: #718096;
+}
+
+#noEvents p {
+  color: #a0aec0;
 } 
